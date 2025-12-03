@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome To Gamify Task!</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Welcome To Gamify Task!</h1>
+<p>Transform your task into fun and rewarding activity!</p>
+<div class="task-form-container">
+    <h2>Add Task</h2>
+    <form id="task-form">
+        <div class="form-group">
+            <label for="task-title">Task Title:</label>
+            <input type="text" id="task-title" name="task-title" required>
+        </div>
+
+
+        <div class="form-group">
+            <label for="task-description">Description:</label>
+            <textarea id="task-description" name="task-description"></textarea>
+        </div>
+
+
+        <div class="form-group">
+            <label for="task-points">Points</label>
+            <input type="number" id="task-points" name="task-points" min="1" required>
+        </div>
+
+        <button type="submit">Add Task</button>
+    </form>
+</div>
+
+
+<div class="tasks-container">
+    <h2>Your Tasks</h2>
+    <div id="tasks-list">
+
+
+    </div>
+</div>
+
+</body>
+</html>
