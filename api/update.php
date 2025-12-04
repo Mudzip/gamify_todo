@@ -10,14 +10,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(array('success' => false, 'message' => 'Only POST method allowed'));
+    exit;
+}
+
+$id = $_POST['task-id'];
+
+
+if (empty($id)) {
+    echo json_encode(array('success' => false, 'message' => 'Task ID required'));
+    exit;
+}
+
 require_once 'config.php';
 $conn = getConnection();
-// TODO: Day 3-4 - Implement UPDATE task endpoint
-// Logic:
-// 1. Get POST data (id, title, description, points, is_completed)
-// 2. Validate input
-// 3. UPDATE tasks WHERE id = ?
-// 4. Return success/error JSON
-echo json_encode(['messeage' =>'update endpoint - Coming in Day 3-4']);
+
+$sql = "UPDATE tasks SET is_completed = 1 WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
+
+if ($stmt->execute()) {
+    echo json_encode(array('success' => true, 'message' => 'Task Completed successfully'));
+} else {
+    echo json_encode(array('success' => false, 'message' => 'Failed: ' . $stmt->error));
+}
+
+$stmt->close();
 $conn->close();
 ?>

@@ -10,14 +10,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(array('success' => false, 'message' => 'Only POST method allowed'));
+    exit;
+}
+
+$id = $_POST['task-id'];
+
+
+if (empty($id)) {
+    echo json_encode(array('success' => false, 'message' => 'Task ID required'));
+    exit;
+}
+
 require_once 'config.php';
 $conn = getConnection();
-// TODO: Day 4 - Implement DELETE task endpoint
-// Logic:
-// 1. Get POST data (id)
-// 2. Validate input
-// 3. DELETE FROM tasks WHERE id = ?
-// 4. Return success/error JSON
-echo json_encode(['messege' =>'update endpoint - Coming in Day 4']);
+
+$sql = "DELETE FROM tasks WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
+
+if ($stmt->execute()) {
+    echo json_encode(array('success' => true, 'message' => 'Task Delete Successfully'));
+} else {
+    echo json_encode(array('success' => false, 'message' => 'Failed: ' . $stmt->error));
+}
+
+$stmt->close();
 $conn->close();
 ?>
