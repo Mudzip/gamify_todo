@@ -37,8 +37,9 @@ $(document).ready(function () {
         });
     }
 
-    // LOAD TASKS ON PAGE LOAD
+    // LOAD TASKS AND STATS ON PAGE LOAD
     loadTasks();
+    loadStats();
 
     // FORM SUBMIT HANDLER
     $('#task-form').submit(function (e) {
@@ -82,6 +83,7 @@ $(document).ready(function () {
             success: function (response) {
                 alert('Task Completed!');
                 loadTasks();
+                loadStats(); // UPDATE STATS AFTER COMPLETING TASK
             },
             error: function (xhr, status, error) {
                 alert('Error: ' + error);
@@ -106,5 +108,24 @@ $(document).ready(function () {
             }
         });
     });
+
+    // Display Points And Level
+    function loadStats() {
+        $.ajax({
+            url: 'api/stats.php',
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                $('#display-level').text(response['level']);
+                $('#display-points').text(response['total_points']);
+                var progress = response['total_points'] % 100;
+                $('#display-progress').css('width', progress + '%');
+            },
+            error: function (xhr, status, error) {
+                console.log('Error loading stats:', error);
+            }
+        });
+    }
+
 
 });
