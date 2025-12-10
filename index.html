@@ -5,51 +5,53 @@
     <title>Welcome To Gamify Task!</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="script.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-<h1>Welcome To Gamify Task!</h1>
-<p>Transform your task into fun and rewarding activity!</p>
-<div class="Stats">
-    <p>Level: <span id="display-level">0</span></p>
-    <p>Points: <span id="display-points">0</span></p>
-    <div class="progress-bar-outer">
-        <div id="display-progress" class="progress-bar-inner"></div>
+<body class="bg-dark text-light">
+<div class="container py-4">
+    <h1>Welcome To Gamify Task!</h1>
+    <p>Transform your task into fun and rewarding activity!</p>
+    <div class="Stats bg-secondary rounded p-3 mb-4">
+        <p>Level: <span id="display-level">0</span></p>
+        <p>Points: <span id="display-points">0</span></p>
+        <div class="progress">
+            <div id="display-progress" class="progress-bar bg-success"></div>
+        </div>
     </div>
-</div>
 
-<div class="task-form-container">
-    <h2>Add Task</h2>
-    <form id="task-form">
-        <div class="form-group">
-            <label for="task-title">Task Title:</label>
-            <input type="text" id="task-title" name="task-title" required>
-        </div>
-
-
-        <div class="form-group">
-            <label for="task-description">Description:</label>
-            <textarea id="task-description" name="task-description"></textarea>
-        </div>
+    <div class="task-form-container">
+        <h2>Add Task</h2>
+        <form id="task-form">
+            <div class="form-group">
+                <label for="task-title">Task Title:</label>
+                <input type="text" id="task-title" name="task-title" class="form-control" required>
+            </div>
 
 
-        <div class="form-group">
-            <label for="task-points">Points</label>
-            <input type="number" id="task-points" name="task-points" min="1" required>
-        </div>
-
-        <button type="submit">Add Task</button>
-    </form>
-</div>
+            <div class="form-group">
+                <label for="task-description">Description:</label>
+                <textarea id="task-description" name="task-description" class="form-control"></textarea>
+            </div>
 
 
-<div class="tasks-container">
-    <h2>Your Tasks</h2>
-    <div id="tasks-list">
+            <div class="mb-3">
+                <label for="task-points">Points</label>
+                <input type="number" id="task-points" name="task-points" min="1" class="form-control" required>
+            </div>
 
-
+            <button type="submit" class="btn btn-success">Add Task</button>
+        </form>
     </div>
-</div>
+
+
+    <div class="tasks-form-container bg-secondary rounded p-3 mb-4">
+        <h2>Your Tasks</h2>
+        <div id="tasks-list">
+
+
+        </div>
+    </div>
 
 </body>
 </html>
