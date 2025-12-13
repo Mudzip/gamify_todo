@@ -40,6 +40,7 @@ $(document).ready(function () {
     // LOAD TASKS AND STATS ON PAGE LOAD
     loadTasks();
     loadStats();
+    loadRewards();
 
     // FORM SUBMIT HANDLER
     $('#task-form').submit(function (e) {
@@ -109,6 +110,29 @@ $(document).ready(function () {
         });
     });
 
+    // Claim Button Handler
+    $('#rewards-list').on('click', '.btn-claim', function () {
+        var rewardLevel = $(this).data('level');
+        $.ajax({
+            url: 'api/claim.php',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({'reward_level': rewardLevel}),
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    alert('Hadiah Diklaim Selamat Menikmati!');
+                    loadRewards(); // Refresh rewards list
+                } else {
+                    alert('Error: ' + response.error);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert('Error: ' + error);
+            }
+        });
+    });
+
     // Display Points And Level
     function loadStats() {
         $.ajax({
@@ -127,5 +151,54 @@ $(document).ready(function () {
         });
     }
 
+
+    function loadRewards() {
+        $.ajax({
+            url: 'api/rewards.php',
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                var currentLevel = response.current_level;
+                var rewards = response.rewards;
+                var claimHistory = response.claim_history;
+
+                // Clear existing
+                $('#rewards-list').html('');
+                $('#claim-history').html('');
+
+                // Loop rewards
+                $.each(rewards, function (index, reward) {
+                    var isUnlocked = currentLevel >= reward.level;
+                    var rewardHtml;
+
+                    if (isUnlocked) {
+                        rewardHtml = '<div class="reward-item bg-success p-2 mb-2 rounded">' +
+                            'Level ' + reward.level + ' - ' + reward.name + ' (' + reward.duration + ')' +
+                            ' <button class="btn btn-sm btn-warning btn-claim" data-level="' + reward.level + '">Claim</button>' +
+                            '</div>';
+                    } else {
+                        rewardHtml = '<div class="reward-item bg-dark p-2 mb-2 rounded text-muted">' +
+                            'Level ' + reward.level + ' - ' + reward.name + ' (' + reward.duration + ')' +
+                            '</div>';
+                    }
+
+                    $('#rewards-list').append(rewardHtml);
+                });
+
+                // Loop claim history
+                if (claimHistory.length === 0) {
+                    $('#claim-history').html('<p>Belum ada klaim.</p>');
+                } else {
+                    $.each(claimHistory, function (index, claim) {
+                        var historyHtml = '<p>• Level ' + claim.reward_level + ' - ' + claim.claimed_at + '</p>';
+                        $('#claim-history').append(historyHtml);
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log('Error loading rewards:', error);
+            }
+        });
+    }
 
 });

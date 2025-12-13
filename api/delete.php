@@ -31,7 +31,7 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id);
 
 if ($stmt->execute()) {
-    echo json_encode(array('success' => true, 'message' => 'Task Delete Successfully'));
+    echo json_encode(array('success' => true, 'message' => 'Task deleted successfully'));
 } else {
     echo json_encode(array('success' => false, 'message' => 'Failed: ' . $stmt->error));
 }
