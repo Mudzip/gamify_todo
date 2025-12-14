@@ -25,4 +25,3 @@ $tasks = $result->fetch_all(MYSQLI_ASSOC);
 echo json_encode($tasks);
 
 $conn->close();
-?>
